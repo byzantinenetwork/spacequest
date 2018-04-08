@@ -34,22 +34,27 @@ contract ByzantineTileMinting is ByzantineTileOwnership {
     // Number of tiles that can be bought all at once in one transaction
     uint256 constant public BULK_QUANTITY = 3;
 
+    // Number of tiles that can be bought all at once in one transaction
+    uint256 constant public BULK_MINTING_QUANTITY = 50;
+
     // Counts the total number of sales, for use with increase rate
     uint256 public byzantineTileSalesCount = 0;
 
     using SafeMath for uint256;
 
-    /// @dev we can create a batch of 1,000 Genesis ByzantineTiles. Only callable by COO
+    /// @dev we can create a single Genesis ByzantineTile. Only callable by COO
     /// @param _owner the future owner of the created ByzantineTile. Default to contract COO
-    function mintGenesisByzantineTile(address _owner) external onlyCOO whenNotPausedPresale {
-      // COO can create an initial tile, only once, which then begins the sale of the remaining 9,000 (i.e. 10,000-1,000) tiles
+    function mintGenesisByzantineTiles(address _owner) external onlyCOO whenNotPausedPresale {
+      // COO can create an initial tile, only once, which then begins the sale of the remaining 9,999 (i.e. 10,000-1) tiles
       require (byzantineSaleStarted == false);
       // Don't mint a Genesis tile if the sale has ended, with the maximum number of tiles alredy sold
       require (byzantineSaleEnded == false);
       // Must be a valid owner address
       require (_owner != address(0));
-      // Mint the Byzantine Tile and assign it to the specified owner, with the starting price as its original value
-      _mintByzantineTile(_owner, BYZANTINE_TILE_STARTING_PRICE);
+      for (uint256 i = 0; i < BULK_MINTING_QUANTITY; i++) {
+        // Mint the Byzantine Tile and assign it to the specified owner, with the starting price as its original value
+        _mintByzantineTile(_owner, BYZANTINE_TILE_STARTING_PRICE);
+      }
       if (totalSupply() >= BYZANTINE_TILE_GENESIS_TILES_NUMBER) {
         // All genesis tiles are now minted, so let's start the sale of the rest
         byzantineSaleStarted = true;
@@ -60,9 +65,9 @@ contract ByzantineTileMinting is ByzantineTileOwnership {
     function mintRegularByzantineTile(address _owner, uint256 value) private whenNotPausedPresale {
       // Only create more tiles once the sale has started. COO must have created the prime tile.
       require (byzantineSaleStarted == true);
-      // Don't mint any more tiles if the sale has ended, with the maximum number of tiles already sold
+      // Don't mint any more tiles if the sale has ended, with the maximum number of tiles alredy sold
       require (byzantineSaleEnded == false);
-      // Must be valid purchaser address
+      // Must be valid purchaser adrdess
       require (_owner != address(0));
       // Only mint tiles up to the maximum amount
       require (totalSupply() < BYZANTINE_TILE_CREATION_LIMIT);
@@ -82,7 +87,7 @@ contract ByzantineTileMinting is ByzantineTileOwnership {
     function purchaseTile() payable public whenNotPausedPresale {
         // sale must have started
         require(byzantineSaleStarted == true);
-        // Don't sell any more tiles if the sale has ended, with the maximum number of tiles already sold
+        // Don't sell any more tiles if the sale has ended, with the maximum number of tiles alredy sold
         require (byzantineSaleEnded == false);
         // Must be valid sender address
         require(msg.sender != address(0));
@@ -125,7 +130,7 @@ contract ByzantineTileMinting is ByzantineTileOwnership {
         uint256 newTotal = totalSupply() + BULK_QUANTITY;
         // Only allow a bulk purchase if there are enough tiles left
         require(newTotal <= BYZANTINE_TILE_CREATION_LIMIT);
-        // if this bulk purchase will not overshoot the sale pause, let it happen
+        // if this bulk purchase will not overshoot the a sale pause, let it happen
         if ((newTotal > BYZANTINE_TILE_SALE_PAUSE_1) && (newTotal < BYZANTINE_TILE_SALE_PAUSE_1.add(BULK_QUANTITY)) ||
             (newTotal > BYZANTINE_TILE_SALE_PAUSE_2) && (newTotal < BYZANTINE_TILE_SALE_PAUSE_2.add(BULK_QUANTITY))) {
         // sale will overshoot a sale pause , stop this bulk sale

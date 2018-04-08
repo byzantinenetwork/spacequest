@@ -1,6 +1,5 @@
 pragma solidity ^0.4.17;
 import "./ByzantineTileAccessControl.sol";
-//import "./Byzantine_07_SaleClockAuction.sol";
 /// @title Base contract for ByzantineTiles. Holds all common structs, events and base variables.
 /// @author Byzantine (https://byzantine.network)
 /// @author Axiom Zen (https://www.axiomzen.co)

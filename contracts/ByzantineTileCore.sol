@@ -10,7 +10,7 @@ import "./ByzantineTileMinting.sol";
 /// @dev The main Tiles (for Byzantine) contract, keeps track of the tiles.
 contract ByzantineTileCore is ByzantineTileMinting {
 
-    // This is the main Byzantine Tiles contract. In order to keep our code separated into logical sections,
+    // This is the main Byzantine Tiles contract. In order to keep our code seperated into logical sections,
     // we've broken it up in two ways. First, we have several seperately-instantiated contracts
     // that handle auctions. The auctions are seperate since their logic is somewhat complex and there's
     // always a risk of subtle bugs. By keeping them in their own contracts, we can upgrade them without
@@ -21,7 +21,7 @@ contract ByzantineTileCore is ByzantineTileMinting {
     // avoiding a single giant file with everything in it. The breakdown is as follows:
     //
     //      - ByzantineTileMinting: This contains the functionality we use for creating new tiles.
-    //             There is a hard limit of 10,000 tiles. Sale of the first 1000 tiles starts the sale, the first tiles can only
+    //             There is a hard limit of 10,000 tiles. Sale of the first tile starts the sale, the first tile can only
     //             be bought by the COO. Sale ends when all 10,000 tiles have been bought.
     //
     //      - ByzantineTileOwnership: This provides the methods required for basic non-fungible token
