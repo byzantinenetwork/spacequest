@@ -101,8 +101,6 @@ contract ByzantineTileMinting is ByzantineTileOwnership {
         if (paymentExcess > 0) {
           msg.sender.transfer(paymentExcess);
         }
-        // update purchasers purchased tile count
-        ownershipTokenCount[msg.sender] = ownershipTokenCount[msg.sender].add(1);
         // update the total sales count
         byzantineTileSalesCount = byzantineTileSalesCount.add(1);
         // emit the TilesPurchased event
@@ -148,8 +146,6 @@ contract ByzantineTileMinting is ByzantineTileOwnership {
         if (paymentExcess > 0) {
           msg.sender.transfer(paymentExcess);
         }
-        // update purchasers purchased tile count
-        ownershipTokenCount[msg.sender] = ownershipTokenCount[msg.sender].add(BULK_QUANTITY);
         // update the total sales count, BULK_QUANTITY counts as one sale
         byzantineTileSalesCount = byzantineTileSalesCount.add(1);
         // emit the TilesPurchased event

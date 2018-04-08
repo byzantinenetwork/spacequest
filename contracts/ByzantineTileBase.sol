@@ -1,5 +1,6 @@
 pragma solidity ^0.4.17;
 import "./ByzantineTileAccessControl.sol";
+import "./SafeMath.sol";
 /// @title Base contract for ByzantineTiles. Holds all common structs, events and base variables.
 /// @author Byzantine (https://byzantine.network)
 /// @author Axiom Zen (https://www.axiomzen.co)
@@ -47,15 +48,17 @@ contract ByzantineTileBase is ByzantineTileAccessControl {
     ///  contract handles peer-to-peer sales.
     //SaleClockAuction public saleAuction;
 
+    using SafeMath for uint256;
+
     /// @dev Assigns ownership of a specific tile to an address.
     function _transfer(address _from, address _to, uint256 _tokenId) internal {
         // Since the number of tiles is capped to 2^32 we can't overflow this
-        ownershipTokenCount[_to]++;
+        ownershipTokenCount[_to] = ownershipTokenCount[_to].add(1);
         // transfer ownership
         byzantineTileIndexToOwner[_tokenId] = _to;
         // When creating new tiles _from is 0x0, but we can't account that address.
         if (_from != address(0)) {
-            ownershipTokenCount[_from]--;
+            ownershipTokenCount[_from] = ownershipTokenCount[_from].sub(1);
             // clear any previously approved ownership exchange
             delete byzantineTileIndexToApproved[_tokenId];
         }

@@ -1,7 +1,7 @@
 pragma solidity ^0.4.17;
 import "./ByzantineTileBase.sol";
 import "./ERC721.sol";
-import "./ERC721MetaData.sol";
+import "./ERC721Metadata.sol";
 import "./SafeMath.sol";
 /// @title The facet of the ByzantineTile core contract that manages ownership, ERC-721 (draft) compliant.
 /// @author Byzantine (https://byzantine.network)
