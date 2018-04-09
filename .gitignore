@@ -42,3 +42,4 @@ truffle-config.js
 truffle.js
 /migrations/*
 /test/*
+build/contracts/*
