@@ -43,3 +43,7 @@ truffle.js
 /migrations/*
 /test/*
 build/contracts/*
+
+# NPM #
+#######
+package.json
